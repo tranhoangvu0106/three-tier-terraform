@@ -34,3 +34,14 @@ resource "aws_lb_listener" "three_tier_lb_listener" {
     target_group_arn = aws_lb_target_group.three_tier_tg.arn
   }
 }
+resource "aws_lb_listener" "three_tier_lb_listener_https" {
+  load_balancer_arn = aws_lb.three_tier_lb.arn
+  port              = var.listener_port_https
+  protocol          = var.listener_protocol_https
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = var.acm_certificate_arn
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.three_tier_tg.arn
+  }
+}

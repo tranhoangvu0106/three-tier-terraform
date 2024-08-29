@@ -8,3 +8,6 @@ variable "vpc_id" {}
 variable "listener_port" {}
 variable "listener_protocol" {}
 variable "azs" {}
+variable "listener_port_https" {}
+variable "listener_protocol_https" {}
+variable "acm_certificate_arn" {}

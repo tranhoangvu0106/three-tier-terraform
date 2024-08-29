@@ -61,6 +61,9 @@ module "loadbalancing" {
   listener_port     = 80
   listener_protocol = "HTTP"
   azs               = 2
+  listener_port_https = "443"
+  listener_protocol_https = "HTTPS"
+  acm_certificate_arn = var.acm_certificate_arn
 }
 
 
