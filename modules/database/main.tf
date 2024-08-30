@@ -1,7 +1,7 @@
 
 resource "aws_db_instance" "three_tier_db" {
   allocated_storage      = var.db_storage
-  engine                 = "mysql"
+  engine                 = var.engine
   engine_version         = var.db_engine_version
   instance_class         = var.db_instance_class
   db_name                = var.db_name

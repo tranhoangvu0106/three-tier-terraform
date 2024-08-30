@@ -1,7 +1,7 @@
 
 # Khởi tạo sss_parameter
 data "aws_ssm_parameter" "three-tier-ami" {
-  name = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+  name = "/my/custom/ubuntu/22.04/ami-id"
 }
 
 resource "tls_private_key" "main" {
@@ -37,9 +37,9 @@ resource "aws_launch_template" "three_tier_bastion" {
 resource "aws_autoscaling_group" "three_tier_bastion" {
   name                = "three_tier_bastion"
   vpc_zone_identifier = var.public_subnets
-  min_size            = 1
-  max_size            = 1
-  desired_capacity    = 1
+  min_size            = var.min_size_basion
+  max_size            = var.max_size_basion
+  desired_capacity    = var.desired_capacity_basion
 
   launch_template {
     id      = aws_launch_template.three_tier_bastion.id
@@ -70,9 +70,9 @@ data "aws_lb_target_group" "three_tier_tg" {
 resource "aws_autoscaling_group" "three_tier_app" {
   name                = "three_tier_app"
   vpc_zone_identifier = var.private_subnets
-  min_size            = 2
-  max_size            = 3
-  desired_capacity    = 2
+  min_size            = var.min_size
+  max_size            = var.max_size
+  desired_capacity    = var.desired_capacity
 
   target_group_arns = [data.aws_lb_target_group.three_tier_tg.arn]
 
@@ -103,9 +103,9 @@ resource "aws_launch_template" "three_tier_backend" {
 resource "aws_autoscaling_group" "three_tier_backend" {
   name                = "three_tier_backend"
   vpc_zone_identifier = var.private_subnets
-  min_size            = 2
-  max_size            = 3
-  desired_capacity    = 2
+  min_size            = var.min_size
+  max_size            = var.max_size
+  desired_capacity    = var.desired_capacity
 
   launch_template {
     id      = aws_launch_template.three_tier_backend.id

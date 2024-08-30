@@ -145,17 +145,17 @@ resource "aws_security_group" "three_tier_bastion_sg" {
   vpc_id      = aws_vpc.three_tier_vpc.id
 
   ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
+    from_port   = var.from_port_ssh
+    to_port     = var.to_port_ssh
+    protocol    = var.protocol_ingress
     cidr_blocks = [var.access_ip]
   }
 
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port   = var.from_port_egress
+    to_port     = var.to_port_egress
+    protocol    = var.protocol_egress
+    cidr_blocks = [var.cidr_block]
   }
 }
 
@@ -166,24 +166,24 @@ resource "aws_security_group" "three_tier_lb_sg" {
   vpc_id      = aws_vpc.three_tier_vpc.id
 
   ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port   = var.from_port_http
+    to_port     = var.to_port_http
+    protocol    = var.protocol_ingress
+    cidr_blocks = [var.cidr_block]
   }
 
   ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port   = var.from_port_https
+    to_port     = var.to_port_https
+    protocol    = var.protocol_ingress
+    cidr_blocks = [var.cidr_block]
   }
 
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port   = var.from_port_egress
+    to_port     = var.to_port_egress
+    protocol    = var.protocol_egress
+    cidr_blocks = [var.cidr_block]
   }
 }
 
@@ -193,31 +193,31 @@ resource "aws_security_group" "three_tier_frontend_app_sg" {
   vpc_id      = aws_vpc.three_tier_vpc.id
 
   ingress {
-    from_port       = 22
-    to_port         = 22
-    protocol        = "tcp"
+    from_port       = var.from_port_ssh
+    to_port         = var.to_port_ssh
+    protocol        = var.protocol_ingress
     security_groups = [aws_security_group.three_tier_bastion_sg.id]
   }
 
   ingress {
-    from_port       = 80
-    to_port         = 80
-    protocol        = "tcp"
+    from_port       = var.from_port_http
+    to_port         = var.to_port_http
+    protocol        = var.protocol_ingress
     security_groups = [aws_security_group.three_tier_lb_sg.id]
   }
 
   ingress {
-    from_port       = 443
-    to_port         = 443
-    protocol        = "tcp"
+    from_port       = var.from_port_https
+    to_port         = var.to_port_https
+    protocol        = var.protocol_ingress
     security_groups = [aws_security_group.three_tier_lb_sg.id]
   }
 
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port   = var.from_port_egress
+    to_port     = var.to_port_egress
+    protocol    = var.protocol_egress
+    cidr_blocks = [var.cidr_block]
   }
 }
 
@@ -227,24 +227,24 @@ resource "aws_security_group" "three_tier_backend_app_sg" {
   description = "Allow Inbound HTTP from FRONTEND APP, and SSH inbound traffic from Bastion"
 
   ingress {
-    from_port       = 80
-    to_port         = 80
-    protocol        = "tcp"
+    from_port       = var.from_port_http
+    to_port         = var.to_port_http
+    protocol        = var.protocol_ingress
     security_groups = [aws_security_group.three_tier_frontend_app_sg.id]
   }
 
   ingress {
-    from_port       = 22
-    to_port         = 22
-    protocol        = "tcp"
+    from_port       = var.from_port_ssh
+    to_port         = var.to_port_ssh
+    protocol        = var.protocol_ingress
     security_groups = [aws_security_group.three_tier_bastion_sg.id]
   }
 
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port   = var.from_port_egress
+    to_port     = var.to_port_egress
+    protocol    = var.protocol_egress
+    cidr_blocks = [var.cidr_block]
   }
 }
 
@@ -254,17 +254,17 @@ resource "aws_security_group" "three_tier_rds_sg" {
   vpc_id      = aws_vpc.three_tier_vpc.id
 
   ingress {
-    from_port       = 3306
-    to_port         = 3306
-    protocol        = "tcp"
+    from_port       = var.from_port_db
+    to_port         = var.to_port_db
+    protocol        = var.protocol_ingress
     security_groups = [aws_security_group.three_tier_backend_app_sg.id]
   }
 
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port   = var.from_port_egress
+    to_port     = var.to_port_egress
+    protocol    = var.protocol_egress
+    cidr_blocks = [var.cidr_block]
   }
 }
 

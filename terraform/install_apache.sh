@@ -1,6 +1,6 @@
 #!/bin/bash
-sudo yum update -y
-sudo yum install -y httpd
-sudo systemctl start httpd
-sudo systemctl enable httpd
-echo "Đây là website test từ $(hostname -f)" > /var/www/html/index.html
+sudo apt update -y
+sudo apt install -y apache2
+sudo systemctl start apache2
+sudo systemctl enable apache2
+echo "Đây là website test từ $(hostname -f)" | sudo tee /var/www/html/index.html

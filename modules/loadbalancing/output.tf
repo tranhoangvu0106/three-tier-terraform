@@ -14,3 +14,6 @@ output "lb_tg_name" {
 output "lb_tg" {
   value = aws_lb_target_group.three_tier_tg.arn
 }
+output "lb_listener_https_arn" {
+  value = aws_lb_listener.three_tier_lb_listener_https.arn
+}

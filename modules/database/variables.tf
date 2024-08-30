@@ -9,3 +9,4 @@ variable "db_engine_version" {}
 variable "db_identifier" {}
 variable "skip_db_snapshot" {}
 variable "rds_sg" {}
+variable "engine" {}
